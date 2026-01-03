@@ -35,6 +35,13 @@ return [
         ],
     ],
 
+    'brevo' => [
+        'key' => env('BREVO_API_KEY'),
+        'sender_email' => env('BREVO_SENDER_EMAIL'),
+        'sender_name' => env('BREVO_SENDER_NAME', env('APP_NAME', '')),
+        'admin_email' => env('BREVO_ADMIN_EMAIL', env('MAIL_FROM_ADDRESS')),
+    ],
+
         'google' => [
             'client_id' => env('GOOGLE_CLIENT_ID'),
             'client_secret' => env('GOOGLE_CLIENT_SECRET'),

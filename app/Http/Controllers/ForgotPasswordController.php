@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Mail\ResetPasswordMail;
+use App\Services\BrevoMailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -39,7 +38,28 @@ class ForgotPasswordController extends Controller
             ]
         );
 
-        Mail::send(new ResetPasswordMail($request->email, $token, $user->name));
+        $resetUrl = route('reset-password-form', ['token' => $token, 'email' => urlencode($request->email)]);
+        $html = view('emails.reset-password', [
+            'resetUrl' => $resetUrl,
+            'name' => $user->name,
+        ])->render();
+
+        try {
+            BrevoMailer::send(
+                $request->email,
+                'Reset Your Password',
+                $html,
+                $user->name,
+                null,
+                ['password', 'reset']
+            );
+        } catch (\Exception $e) {
+            \Log::error('Failed to send reset password email: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'Failed to send password reset email',
+            ], 500);
+        }
 
         return response()->json([
             'message' => 'Password reset link sent to your email',

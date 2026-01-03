@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
-use App\Mail\ContactReceivedMail;
-use App\Mail\ContactAcknowledgmentMail;
+use App\Models\User;
+use App\Services\BrevoMailer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
@@ -53,13 +52,49 @@ class ContactController extends Controller
                 'message' => $contact->message,
             ];
 
-            // Send email to company
-            Mail::to('wecare@inferlogics.com')
-                ->send(new ContactReceivedMail($contactData));
+            $adminEmail = config('services.brevo.admin_email', config('mail.from.address'));
 
-            // Send acknowledgment email to user
-            Mail::to($contact->email)
-                ->send(new ContactAcknowledgmentMail($contactData));
+            // Send emails, but don't fail if email sending fails
+            try {
+                $adminHtml = view('emails.contact-received', ['contactData' => $contactData])->render();
+                BrevoMailer::send(
+                    $adminEmail,
+                    'New Contact Form Submission - ' . $contact->name,
+                    $adminHtml,
+                    $contact->name,
+                    $contact->email,
+                    ['contact', 'admin']
+                );
+            } catch (\Exception $emailError) {
+                \Log::error('Failed to send admin contact email: ' . $emailError->getMessage());
+            }
+
+            try {
+                $verifiedRecipient = User::where('email', $contact->email)
+                    ->where(function ($q) {
+                        $q->where('is_email_verified', true)
+                          ->orWhereNotNull('email_verified_at');
+                    })
+                    ->first();
+
+                if ($verifiedRecipient) {
+                    $ackHtml = view('emails.contact-acknowledgment', ['contactData' => $contactData])->render();
+                    BrevoMailer::send(
+                        $verifiedRecipient->email,
+                        'We Received Your Message - Thank You!',
+                        $ackHtml,
+                        $verifiedRecipient->name ?? $contact->name,
+                        null,
+                        ['contact', 'customer']
+                    );
+                } else {
+                    \Log::info('Skipping acknowledgment email because user is not verified', [
+                        'email' => $contact->email,
+                    ]);
+                }
+            } catch (\Exception $emailError) {
+                \Log::error('Failed to send acknowledgment email: ' . $emailError->getMessage());
+            }
 
             return response()->json([
                 'success' => true,

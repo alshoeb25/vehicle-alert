@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Mail\VerifyEmailMail;
+use App\Services\BrevoMailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -95,7 +94,20 @@ class AuthController extends Controller
                 'expires_at' => now()->addHours(24),
             ]);
 
-            Mail::send(new VerifyEmailMail($request->email, $token, $request->name));
+            $verificationUrl = route('verify-email', ['token' => $token, 'email' => urlencode($request->email)]);
+            $html = view('emails.verify-email', [
+                'verificationUrl' => $verificationUrl,
+                'name' => $request->name,
+            ])->render();
+
+            BrevoMailer::send(
+                $request->email,
+                'Verify Your Email Address',
+                $html,
+                $request->name,
+                null,
+                ['verification', 'signup']
+            );
 
             return response()->json([
                 'message' => 'Registration successful! Verification link sent to your email.',
@@ -230,7 +242,20 @@ class AuthController extends Controller
             );
 
             try {
-                Mail::send(new VerifyEmailMail($user->email, $token, $user->name));
+                $verificationUrl = route('verify-email', ['token' => $token, 'email' => urlencode($user->email)]);
+                $html = view('emails.verify-email', [
+                    'verificationUrl' => $verificationUrl,
+                    'name' => $user->name,
+                ])->render();
+
+                BrevoMailer::send(
+                    $user->email,
+                    'Verify Your Email Address',
+                    $html,
+                    $user->name,
+                    null,
+                    ['verification', 'login']
+                );
             } catch (\Exception $e) {
                 \Log::error('Failed to send verification email: ' . $e->getMessage());
             }
@@ -305,9 +330,24 @@ class AuthController extends Controller
         );
 
         try {
-            Mail::send(new VerifyEmailMail($user->email, $token, $user->name));
+            $verificationUrl = route('verify-email', ['token' => $token, 'email' => urlencode($user->email)]);
+            $html = view('emails.verify-email', [
+                'verificationUrl' => $verificationUrl,
+                'name' => $user->name,
+            ])->render();
+
+            BrevoMailer::send(
+                $user->email,
+                'Verify Your Email Address',
+                $html,
+                $user->name,
+                null,
+                ['verification', 'resend']
+            );
+
             return response()->json(['message' => 'Verification email sent successfully'], 200);
         } catch (\Exception $e) {
+            \Log::error('Failed to send verification email: ' . $e->getMessage());
             return response()->json(['message' => 'Failed to send verification email'], 500);
         }
     }
