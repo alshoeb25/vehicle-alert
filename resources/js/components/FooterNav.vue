@@ -50,7 +50,7 @@
           <div class="col-xl-6">
             <div class="footer__bottom-inner">
               <div class="footer__bottom-text">
-                <p>Copyright © 2024 All Rights Reserved Inferlogic Consultancy Services Pvt Ltd.</p>
+                <p>Copyright © 2026 All Rights Reserved Inferlogic Consultancy Services Pvt Ltd.</p>
               </div>
             </div>
           </div>
@@ -131,9 +131,151 @@ defineEmits(['toggle-mobile', 'toggle-chatbot']);
 
 <style scoped>
 /* Footer responsive container */
-.footer { width: 100%; }
+.footer { width: 100%; overflow: visible; }
 .footer .container { width: 100%; padding-left: 16px; padding-right: 16px; }
 .footer__top .row, .footer__bottom .row { display: flex; flex-wrap: wrap; }
+.footer-widget__about p{text-align: left;}
+
+.footer__bottom {
+  width: 100%;
+  background: #fecc00;
+  padding: 16px 0;
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  border-top: 1px solid #fecc00;
+  color: #1a1a1a;
+}
+
+.footer__bottom .social-link ul {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.footer__bottom-text p {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Mobile First - up to 767px */
+@media (max-width: 767px) {
+  .footer {
+    padding-bottom: 48px;
+  }
+
+  .footer-widget__column.footer-widget__about {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .footer-widget__about p {
+    text-align: center;
+  }
+  
+  .footer-widget__about h2 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  .footer-widget__about img {
+    display: block;
+    margin: 0 auto 15px;
+  }
+  
+  .footer-widget__about ul {
+    justify-content: center !important;
+    text-align: center;
+  }
+  
+  .footer-widget__about ul li {
+    float: none !important;
+    display: inline-block !important;
+    margin: 0 10px !important;
+  }
+  
+  .footer__top-wrapper .row {
+    flex-direction: column;
+  }
+  
+  .col-xl-4, .col-xl-8 {
+    width: 100% !important;
+  }
+  
+  .col-md-4 {
+    width: 100% !important;
+  }
+  
+  .col-md-8 {
+    width: 100% !important;
+  }
+  
+  .footer__bottom .row {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .col-xl-6 {
+    width: 100% !important;
+    margin-bottom: 15px;
+  }
+  
+  .social-link {
+    text-align: center;
+  }
+  
+  .social-link ul {
+    justify-content: center;
+    display: flex;
+    gap: 12px;
+  }
+
+  .footer__bottom {
+    border-top: 1px solid #fecc00;
+    padding-top: 20px;
+    
+  }
+}
+
+/* Tablet - 768px to 991px */
+@media (min-width: 768px) and (max-width: 991px) {
+  .footer-widget__column.footer-widget__about {
+    text-align: center;
+  }
+  
+  .footer-widget__about h2 {
+    text-align: center;
+  }
+  
+  .col-xl-4 {
+    width: 50% !important;
+  }
+  
+  .col-xl-8 {
+    width: 50% !important;
+  }
+}
+
+/* Desktop - 992px and up */
+@media (min-width: 992px) {
+  .footer-widget__about p {
+    text-align: left;
+  }
+  
+  .col-xl-4 {
+    width: 33.333% !important;
+  }
+  
+  .col-xl-6 {
+    width: 50% !important;
+  }
+  
+  .col-xl-8 {
+    width: 66.666% !important;
+  }
+}
 
 /* Mobile nav panel */
 .mobile-nav__wrapper { position: fixed; inset: 0; z-index: 10000; display: none; }

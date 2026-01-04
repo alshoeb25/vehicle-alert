@@ -31,24 +31,57 @@
                         <!-- Nav tabs -->
                         <nav>
                             <div class="nav nav-tabs border-0 text-center box-shadow" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-tab1" data-bs-toggle="tab" href="#tab1-1" role="tab" aria-selected="false">
+                                <a
+                                  class="nav-item nav-link"
+                                  :class="{ active: activeTab === 'tab1-1' }"
+                                  id="nav-tab1"
+                                  href="#tab1-1"
+                                  role="tab"
+                                  :aria-selected="activeTab === 'tab1-1'"
+                                  @click.prevent="setActiveTab('tab1-1')"
+                                >
                                     <div class="tab-icon">
                                         <i class="fa-solid fa-gear" style="font-size: 27px;padding-top: 7px;color: #000;"></i>
                                     </div>
                                     <h5>Getting Started</h5>
-                                </a> <a class="nav-item nav-link" id="nav-tab2" data-bs-toggle="tab" href="#tab1-2" role="tab" aria-selected="false">
+                                </a>
+                                <a
+                                  class="nav-item nav-link"
+                                  :class="{ active: activeTab === 'tab1-2' }"
+                                  id="nav-tab2"
+                                  href="#tab1-2"
+                                  role="tab"
+                                  :aria-selected="activeTab === 'tab1-2'"
+                                  @click.prevent="setActiveTab('tab1-2')"
+                                >
                                     <div class="tab-icon">
                                         <i class="fa-solid fa-user" style="font-size: 27px;padding-top: 7px;color: #000;"></i>
                                     </div>
                                     <h5>My Account</h5>
                                 </a>
-                                <a class="nav-item nav-link" id="nav-tab3" data-bs-toggle="tab" href="#tab1-3" role="tab" aria-selected="false">
+                                <a
+                                  class="nav-item nav-link"
+                                  :class="{ active: activeTab === 'tab1-3' }"
+                                  id="nav-tab3"
+                                  href="#tab1-3"
+                                  role="tab"
+                                  :aria-selected="activeTab === 'tab1-3'"
+                                  @click.prevent="setActiveTab('tab1-3')"
+                                >
                                     <div class="tab-icon">
                                         <i class="fa-solid fa-triangle-exclamation" style="font-size: 27px;padding-top: 7px;color: #000;"></i>
                                     </div>
                                     <h5>Error Messages</h5>
                                 </a>
-                                <a class="nav-item nav-link " id="nav-tab4" data-bs-toggle="tab" href="#tab1-4" role="tab" aria-selected="true">
+                                <a
+                                  class="nav-item nav-link"
+                                  :class="{ active: activeTab === 'tab1-4' }"
+                                  id="nav-tab4"
+                                  href="#tab1-4"
+                                  role="tab"
+                                  :aria-selected="activeTab === 'tab1-4'"
+                                  @click.prevent="setActiveTab('tab1-4')"
+                                >
                                     <div class="tab-icon">
                                         <i class="fa-regular fa-clipboard" style="font-size: 27px;padding-top: 7px;color: #000;"></i>
                                          
@@ -60,7 +93,7 @@
         
                         <!-- Tab panes -->
                         <div class="tab-content px-5 py-8" id="nav-tabContent">
-                            <div role="tabpanel" class="tab-pane fade  active show" id="tab1-1">
+                            <div role="tabpanel" class="tab-pane fade" :class="{ active: activeTab === 'tab1-1', show: activeTab === 'tab1-1' }" id="tab1-1">
                                 <div class="row ">
                                     <div class="col-lg-6 col-md-12" >
                                         <img class="img-fluid" src="assets/images/getting-started-1.svg" alt="">
@@ -146,7 +179,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="tab1-2">
+                            <div role="tabpanel" class="tab-pane fade" :class="{ active: activeTab === 'tab1-2', show: activeTab === 'tab1-2' }" id="tab1-2">
                                
                                 <div class="row ">
                                     <div class="col-lg-6 col-md-12" >
@@ -238,7 +271,7 @@
 
                                
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="tab1-3">
+                            <div role="tabpanel" class="tab-pane fade" :class="{ active: activeTab === 'tab1-3', show: activeTab === 'tab1-3' }" id="tab1-3">
                                 <div class="row ">
                                     <div class="col-lg-6 col-md-12" >
                                         <img class="img-fluid" src="assets/images/error.jpeg" alt="">
@@ -277,7 +310,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="tab1-4">
+                            <div role="tabpanel" class="tab-pane fade" :class="{ active: activeTab === 'tab1-4', show: activeTab === 'tab1-4' }" id="tab1-4">
                                 <div class="row ">
                                     <div class="col-lg-6 col-md-12"  >
                                         <img class="img-fluid" src="assets/images/my-account.jpeg" alt="">
@@ -384,6 +417,7 @@ import FooterNav from './FooterNav.vue';
 const mobileNavOpen = ref(false);
 const chatbotOpen = ref(false);
 const isLoggedIn = ref(false);
+const activeTab = ref('tab1-1');
 
 const toggleMobileNav = () => {
   mobileNavOpen.value = !mobileNavOpen.value;
@@ -393,6 +427,10 @@ const toggleMobileNav = () => {
 const toggleChatbot = () => {
   chatbotOpen.value = !chatbotOpen.value;
   document.body.classList.toggle('show-chatbot');
+};
+
+const setActiveTab = (tabId) => {
+    activeTab.value = tabId;
 };
 
 const logout = async (e) => {

@@ -23,11 +23,11 @@
       </div>
     </section>
 
-    <div id="contact" class="contact-area mb-165 mt-155">
+    <div id="contact" class="contact-area mb-25 mt-50">
       <div class="contact-wrapper position-relative">
         <div class="container">
           <div class="row">
-            <div class="col-xl-6 col-lg-5 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-6 col-lg-5 col-md-12 col-sm-12 col-12 contact-info-col">
               <div class="contact-wrapper pb-20">
                 <div class="title text-md-center text-lg-left">
                   <h3 class="f-700">Contact Us</h3>
@@ -69,15 +69,15 @@
                 </ul>
               </div>
             </div>
-            <div class="col-xl-6 col-lg-7 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-6 col-lg-7 col-md-12 col-sm-12 col-12 contact-form-col">
               <div class="contact-wrapper">
                 <div class="contact-form">
                   <div class="title px-md-5 px-lg-0 text-lg-left">
                     <h3 class="f-700 mb-40">Drop us a line</h3>
-                    <p class="mb-20">We are at your disposal for any information you may need. Complete the fields below: We will reply within 24 working hours.</p>
+                    <p>We are at your disposal for any information you may need. Complete the fields below: We will reply within 24 working hours.</p>
                   </div>
                   <form @submit.prevent="submitContactForm" id="contact-form">
-                    <div class="contact-info text-lg-left pt-20">
+                    <div class="contact-info text-lg-left">
                       <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-15">
                           <input 
@@ -119,7 +119,7 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-15">
                           <textarea 
                             v-model="formData.message"
-                            class="massage w-100 primary-border pl-20 pt-20" 
+                            class="massage w-100 primary-border pl-2 pt-2" 
                             name="inputMessage" 
                             id="inputMessage" 
                             placeholder="Your query *" 
@@ -128,7 +128,7 @@
                           ></textarea>
                         </div>
                       </div>
-                      <div class="my-btn mt-40">
+                      <div class="my-btn">
                         <button 
                           class="btn text-uppercase f-18 f-700" 
                           type="submit"
@@ -259,6 +259,13 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.page-wrapper {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
+}
+
 .mobile-nav__wrapper.expanded {
   visibility: visible;
 }
@@ -296,5 +303,154 @@ textarea:disabled,
 button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Force all elements to stay within viewport */
+.page-wrapper,
+.page-wrapper > *,
+.page-wrapper * {
+  max-width: 100vw !important;
+}
+
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 991px) {
+  .page-header,
+  .contact-area {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .row {
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .contact-info-col,
+  .contact-form-col,
+  .col-xl-6,
+  .col-lg-5,
+  .col-lg-7,
+  .col-md-12 {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .contact-info-content {
+    flex-direction: column !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+  
+  .contact-wrapper {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .contact-form {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .title {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .title.px-md-5 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  
+  input,
+  textarea,
+  button,
+  .btn {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .s-contact {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    max-width: 100% !important;
+  }
+
+  .contact-icon {
+    margin-bottom: 10px !important;
+    margin-right: 0 !important;
+  }
+
+  .page-header__content h2 {
+    font-size: 28px !important;
+    word-break: break-word;
+  }
+
+  .page-header__menu ul {
+    padding-left: 0 !important;
+  }
+
+  /* Remove negative margins from rows */
+  .row {
+    --bs-gutter-x: 0 !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .contact-info-col,
+  .contact-form-col,
+  .col-xl-6,
+  .col-lg-5,
+  .col-lg-7,
+  .col-md-12 {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .page-header__content h2 {
+    font-size: 24px !important;
+  }
+
+  input,
+  textarea {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .contact-text p,
+  .contact-text a {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
 }
 </style>
